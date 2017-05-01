@@ -16,7 +16,7 @@ if launchctl list | grep syncworkd >/dev/null 2>&1; then
   launchctl unload $HOME/Library/LaunchAgents/syncworkd.plist
 fi
 
-SCRIPT_PATH=`sed -ne '/synwork.sh/p' $HOME/Library/LaunchAgents/syncworkd.plist`
+SCRIPT_PATH=`sed -ne '/syncwork.sh/p' $HOME/Library/LaunchAgents/syncworkd.plist`
 SCRIPT_PATH=`echo $SCRIPT_PATH | sed -e "s/\t*<string>\(.*\)<\/string>/\1/g"`
 
 rm $SCRIPT_PATH
