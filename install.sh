@@ -37,6 +37,19 @@ echo -n "> "; while read WORKSPACE; do
   fi
 done
 
+## WORKSPACE_NAME
+
+echo "OK&OK. Then, what is your workspace's name? like a \"Workspace\"."
+
+echo -n "> "; while read WORKSPACE_NAME; do
+  if [ "$WORKSPACE" = "" ]; then
+    echo "Oops, Please specify at least one character."
+    echo -n "> "
+  else
+    break
+  fi
+done
+
 ## MAXSIZE
 
 echo "Nice. So, What the maximum file size do you want in MB? (e.g. 500)."
@@ -70,6 +83,7 @@ echo "Great. Here is your settings. If it is OK, type \"y\" to continue the inst
 
 echo "CLOUD DRIVES (1.Google Drive, 2.Dropbox, 3.iCloud Drive): ${CLOUD_DRIVES[*]}"
 echo "WORKSPACE: $WORKSPACE"
+echo "WORKSPACE_NAME: $WORKSPACE_NAME"
 echo "MAXSIZE: $MAXSIZE"
 echo "SCRIPT PATH: $SCRIPT_PATH"
 
@@ -101,26 +115,34 @@ cp ./syncwork.sh $SCRIPT_PATH
 IFS_=$IFS
 IFS=$'\n'
 
+CLOUD_DRIVE_PATHS=()
+
+function not_found() {
+  echo "Umm..., sorry I can't find $HOME/$CLOUD_DRIVE."
+  echo "Please write the correct PATH to the script file directly."
+}
+
 for i in `seq 0 1 $((NUM_CLOUD_DRIVES-1))`; do
   case "${CLOUD_DRIVES[i]}" in
-    "1" ) CLOUD_DRIVES[i]="Google Drive";;
-    "2" ) CLOUD_DRIVES[i]="Dropbox";;
-    "3" ) CLOUD_DRIVES[i]="iCloud Drive";;
+    "1" )
+      [ ! -d "$HOME/Google Drive" ] && not_found
+      sed -i '' -e "s|#Google Drive|$HOME/Google Drive|" $SCRIPT_PATH/syncwork.sh
+      ;;
+    "2" )
+      [ ! -d "$HOME/Dropbox" ] && not_found
+      sed -i '' -e "s|#Dropbox|$HOME/Dropbox|" $SCRIPT_PATH/syncwork.sh
+      ;;
+    "3" )
+      [ ! -d "$HOME/Library/Mobile Documents/com~apple~CloudDocs" ] && not_found
+      sed -i '' -e "s|#iCloud Drive|$HOME/Library/Mobile Documents/com~apple~CloudDocs|" $SCRIPT_PATH/syncwork.sh
+      ;;
   esac
-done
-
-for CLOUD_DRIVE in $CLOUD_DRIVES; do
-  if [ ! -d "$HOME/$CLOUD_DRIVE" ]; then
-    echo "Umm..., sorry I can't find $HOME/$CLOUD_DRIVE."
-    echo "Please write the correct PATH to the script file directly."
-    continue
-  fi
-  sed -i '' -e "8i $HOME/$CLOUD_DRIVE" $SCRIPT_PATH/syncwork.sh
 done
 
 IFS=$IFS_
 
-sed -i '' -e "s|WORKSPACE_|$WORKSPACE|" \
+sed -i '' -e "s|WORKSPACE_$|$WORKSPACE|" \
+-e "s|WORKSPACE_NAME_$|$WORKSPACE_NAME|" \
 -e "s/MAXSIZE_/$MAXSIZE/" $SCRIPT_PATH/syncwork.sh
 
 if [ -f $HOME/Library/LaunchAgents/syncworkd.plist ]; then
@@ -128,7 +150,7 @@ if [ -f $HOME/Library/LaunchAgents/syncworkd.plist ]; then
 fi
 cp ./syncworkd.plist $HOME/Library/LaunchAgents/
 
-sed -i '' -e "s|PATHTO|SCRIPT_PATH|g" $HOME/Library/LaunchAgents/syncworkd.plist
+sed -i '' -e "s|PATHTO|$SCRIPT_PATH|g" $HOME/Library/LaunchAgents/syncworkd.plist
 
 if launchctl list | grep syncworkd >/dev/null 2>&1; then
   launchctl stop syncworkd

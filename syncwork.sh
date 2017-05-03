@@ -5,11 +5,17 @@ set -eu
 
 # The list of cloud drives
 CLOUD_DRIVES=$(cat <<EO_CLOUD_DRIVES
+#Google Drive
+#Dropbox
+#iCloud Drive
 EO_CLOUD_DRIVES
 )
 
 # Path to local workspace
 WORKSPACE=WORKSPACE_
+
+# Name of workspace
+WORKSPACE_NAME=WORKSPACE_NAME_
 
 # Max file size (KB)
 MAXSIZE=$((MAXSIZE_*1000)) # 500MB
@@ -42,7 +48,7 @@ fi
 
 for CLOUD_DRIVE in $CLOUD_DRIVES; do
   if [ -d $CLOUD_DRIVE ]; then
-    CLOUD_WORKSPACE=$CLOUD_DRIVE/Workspace
+    CLOUD_WORKSPACE=$CLOUD_DRIVE/$WORKSPACE_NAME
     if [ ! -d $CLOUD_WORKSPACE ]; then
       mkdir $CLOUD_WORKSPACE
     fi
