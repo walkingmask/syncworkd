@@ -110,17 +110,17 @@ for i in `seq $NUM_CLOUD_DRIVES`; do
 done
 
 for CLOUD_DRIVE in $CLOUD_DRIVES; do
-  if [ ! -d "$HOME/CLOUD_DRIVE" ]; then
-    echo "Umm..., sorry I can't find $HOME/CLOUD_DRIVE."
+  if [ ! -d "$HOME/$CLOUD_DRIVE" ]; then
+    echo "Umm..., sorry I can't find $HOME/$CLOUD_DRIVE."
     echo "Please write the correct PATH to the script file directly."
     continue
   fi
-  sed -i '' -e "8i $HOME/CLOUD_DRIVE" $SCRIPT_PATH/syncwork.sh
+  sed -i '' -e "8i $HOME/$CLOUD_DRIVE" $SCRIPT_PATH/syncwork.sh
 done
 
 IFS=$IFS_
 
-sed -i '' -e "s/WORKSPACE_/$WORKSPACE/" \
+sed -i '' -e "s|WORKSPACE_|$WORKSPACE|" \
 -e "s/MAXSIZE_/$MAXSIZE/" $SCRIPT_PATH/syncwork.sh
 
 if [ -f $HOME/Library/LaunchAgents/syncworkd.plist ]; then
@@ -128,7 +128,7 @@ if [ -f $HOME/Library/LaunchAgents/syncworkd.plist ]; then
 fi
 cp ./syncworkd.plist $HOME/Library/LaunchAgents/
 
-sed -i '' -e "s/PATHTO/SCRIPT_PATH/g" $HOME/Library/LaunchAgents/syncworkd.plist
+sed -i '' -e "s|PATHTO|SCRIPT_PATH|g" $HOME/Library/LaunchAgents/syncworkd.plist
 
 if launchctl list | grep syncworkd >/dev/null 2>&1; then
   launchctl stop syncworkd
