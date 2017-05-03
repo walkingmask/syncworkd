@@ -101,8 +101,8 @@ cp ./syncwork.sh $SCRIPT_PATH
 IFS_=$IFS
 IFS=$'\n'
 
-for i in `seq $NUM_CLOUD_DRIVES`; do
-  case "$CLOUD_DRIVES[i]" in
+for i in `seq 0 1 $((NUM_CLOUD_DRIVES-1))`; do
+  case "${CLOUD_DRIVES[i]}" in
     "1" ) CLOUD_DRIVES[i]="Google Drive";;
     "2" ) CLOUD_DRIVES[i]="Dropbox";;
     "3" ) CLOUD_DRIVES[i]="iCloud Drive";;
