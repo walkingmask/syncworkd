@@ -68,7 +68,7 @@ done
 
 echo "Great. Here is your settings. If it is OK, type \"y\" to continue the installation."
 
-echo "CLOUD DRIVES (1.Google Drive, 2.Dropbox, 3.iCloud Drive): $CLOUD_DRIVES"
+echo "CLOUD DRIVES (1.Google Drive, 2.Dropbox, 3.iCloud Drive): ${CLOUD_DRIVES[*]}"
 echo "WORKSPACE: $WORKSPACE"
 echo "MAXSIZE: $MAXSIZE"
 echo "SCRIPT PATH: $SCRIPT_PATH"
