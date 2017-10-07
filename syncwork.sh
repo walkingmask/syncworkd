@@ -20,14 +20,14 @@ WORKSPACE_NAME=WORKSPACE_NAME_
 # Max file size (KB)
 MAXSIZE=$((MAXSIZE_*1000)) # 500MB
 
-# Check existance of workspace
-if [ ! -d $WORKSPACE ]; then
-  errorlog="[`date`] syncwork: Error. There is no $WORKSPACE." >>$errorlogfile
-  exit 1
-fi
-
 # Error log
 errorlogfile="$HOME/Desktop/syncwork_error`date +%Y%m%d%H%M`.log"
+
+# Check existance of workspace
+if [ ! -d $WORKSPACE ]; then
+  echo "[`date`] syncwork: Error. There is no $WORKSPACE." >>$errorlogfile
+  exit 1
+fi
 
 # File size filter
 for size in `du -k $WORKSPACE/* | cut -f 1`; do
