@@ -12,12 +12,12 @@ echo "  1. Google Drive"
 echo "  2. Dropbox"
 echo "  3. iCloud Drive"
 
-echo -n "> "; while read CLOUD_DRIVES; do
+printf "> "; while read CLOUD_DRIVES; do
   CLOUD_DRIVES=(`echo $CLOUD_DRIVES | tr -s ',' ' '`)
   NUM_CLOUD_DRIVES=${#CLOUD_DRIVES[*]} 
   if [ $NUM_CLOUD_DRIVES -lt 1 ] || [ $NUM_CLOUD_DRIVES -gt 3 ]; then
     echo "Oops, please specify the numbers 1 ~ 3, at least one of them (e.g. 2)."
-    echo -n "> "
+    printf "> "
   else
     break
   fi
@@ -27,11 +27,11 @@ done
 
 echo "OK. Then, where is your workspace? like a \"~/Workspace\"."
 
-echo -n "> "; while read WORKSPACE; do
+printf "> "; while read WORKSPACE; do
   WORKSPACE=`eval echo $WORKSPACE`
   if [ "$WORKSPACE" = "" ] || [ ! -d $WORKSPACE ]; then
     echo "Oops, I could not find that place. Please specify it correctly."
-    echo -n "> "
+    printf "> "
   else
     break
   fi
@@ -41,10 +41,10 @@ done
 
 echo "OK&OK. Then, what is your workspace's name? like a \"Workspace\"."
 
-echo -n "> "; while read WORKSPACE_NAME; do
+printf "> "; while read WORKSPACE_NAME; do
   if [ "$WORKSPACE" = "" ]; then
     echo "Oops, Please specify at least one character."
-    echo -n "> "
+    printf "> "
   else
     break
   fi
@@ -54,10 +54,10 @@ done
 
 echo "Nice. So, What the maximum file size do you want in MB? (e.g. 500)."
 
-echo -n "> "; while read MAXSIZE; do
+printf "> "; while read MAXSIZE; do
   if [ "$MAXSIZE" = "" ]; then
     echo "Oops, please specify correctly file size."
-    echo -n "> "
+    printf "> "
   else
     break
   fi
@@ -67,11 +67,11 @@ done
 
 echo "Good. Finally, where should I put the syncwork script file? (default is ~/)."
 
-echo -n "> "; while read SCRIPT_PATH; do
+printf "> "; while read SCRIPT_PATH; do
   SCRIPT_PATH=${SCRIPT_PATH/\~/$HOME}
   if [ "$SCRIPT_PATH" = "" ] || [ ! -d $SCRIPT_PATH ]; then
     echo "Oops, I could not find that place. Please specify it correctly."
-    echo -n "> "
+    printf "> "
   else
     break
   fi
@@ -87,18 +87,18 @@ echo "WORKSPACE_NAME: $WORKSPACE_NAME"
 echo "MAXSIZE: $MAXSIZE"
 echo "SCRIPT PATH: $SCRIPT_PATH"
 
-echo -n "> "; while read ANSWER1; do
+printf "> "; while read ANSWER1; do
   if [ "$ANSWER1" = "y" ]; then
     break
   else
     echo "Do you want to cancel the installation or change the settings? [y/n]"
-    echo -n "> "; read ANSWER2
+    printf "> "; read ANSWER2
     if [ "$ANSWER2" = "y" ]; then
       echo "OK. If you want to install, please run me from the beginning. Bye."
       exit 1
     else
       echo "Do you want to continue the installation? [y/n]"
-      echo -n "> "
+      printf "> "
     fi
   fi
 done
