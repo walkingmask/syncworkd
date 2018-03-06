@@ -53,7 +53,7 @@ for CLOUD_DRIVE in $CLOUD_DRIVES; do
       mkdir $CLOUD_WORKSPACE
     fi
     if [ "`diff -qr $WORKSPACE $CLOUD_WORKSPACE`" != "" ]; then
-      rsync -a --delete $WORKSPACE/ $CLOUD_WORKSPACE
+      rsync -a --delete --delete-excluded --exclude='.git/' --exclude '.gitignore' $WORKSPACE/ $CLOUD_WORKSPACE
     fi
   else
     echo "[`date`] syncworkd: Error. There is no $CLOUD_DRIVE." >>$errorlogfile
