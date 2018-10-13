@@ -47,6 +47,10 @@ if [ "$CLOUD_DRIVES" = "" ]; then
 fi
 
 for CLOUD_DRIVE in $CLOUD_DRIVES; do
+  if [ ${CLOUD_DRIVE:0:1} = "#" ]; then
+    continue
+  fi
+
   if [ -d $CLOUD_DRIVE ]; then
     CLOUD_WORKSPACE=$CLOUD_DRIVE/$WORKSPACE_NAME
     if [ ! -d $CLOUD_WORKSPACE ]; then
